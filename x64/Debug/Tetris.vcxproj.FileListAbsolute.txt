@@ -1,0 +1,3 @@
+C:\Seneca\Tetris\x64\Debug\Tetris.vcxproj.CopyComplete
+C:\Seneca\Tetris\x64\Debug\Tetris.exe
+C:\Seneca\Tetris\x64\Debug\raylib.dll
