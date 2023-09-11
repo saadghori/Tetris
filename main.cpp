@@ -7,6 +7,17 @@
 #include <raylib.h>
 #include "Game.h"
 
+double lastUpdateTime{ 0 };
+bool eventTriggered(double interval){ // function that delays the freefall movement of the blocks
+	double currentTime = GetTime();
+	if (currentTime - lastUpdateTime >= interval) {
+		lastUpdateTime = currentTime;
+		return true;
+	}
+
+	return false;
+}
+
 int main() {
 
 	Color navyBlue = { 18, 0, 82, 255 }; // initializing the color struct
@@ -17,7 +28,9 @@ int main() {
 
 	while (WindowShouldClose() == false) { // loop will continue till escape key or close icon is pressed
 		game.handleInput();
-		game.moveBlockDown();
+		if (eventTriggered(0.3)) {
+			game.moveBlockDown();
+		}
 		BeginDrawing(); // draw on canvas
 		ClearBackground(navyBlue);
 		game.draw();

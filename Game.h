@@ -18,10 +18,14 @@ public:
 	void moveBlockLeft();
 	void moveBlockRight();
 	void moveBlockDown();
+	bool gameover;
 private:
 	bool isBlockOutside();
 	void RotateBlock();
 	std::vector<Block> blocks;
 	Block currentBlock;
 	Block nextBlock;
+	void lockBlock();
+	bool blockFits();
+	void reset();
 };
