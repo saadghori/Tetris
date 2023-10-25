@@ -4,6 +4,7 @@
 // 7 shapes called tetrominos
 // rotations are handled through updating states 
 
+#define _CRT_SECURE_NO_WARNINGS
 #include <raylib.h>
 #include "Game.h"
 
@@ -21,10 +22,13 @@ bool eventTriggered(double interval){ // function that delays the freefall movem
 int main() {
 
 	Color navyBlue = { 18, 0, 82, 255 }; // initializing the color struct
-	InitWindow(300, 600, "Tetris"); // sets the width and height of the game screen and initializes it
+	InitWindow(500, 620, "Tetris"); // sets the width and height of the game screen and initializes it
 	SetTargetFPS(60); // game will run on 60fps
 	
+	Font font = LoadFontEx("Font/cabin.ttf", 64, 0, 0);
+
 	Game game = Game();
+
 
 	while (WindowShouldClose() == false) { // loop will continue till escape key or close icon is pressed
 		game.handleInput();
@@ -33,6 +37,19 @@ int main() {
 		}
 		BeginDrawing(); // draw on canvas
 		ClearBackground(navyBlue);
+		DrawTextEx(font, "Score", { 365,15 }, 38, 2, WHITE);
+		DrawTextEx(font, "Next", { 370, 175 }, 38, 2, WHITE);
+		if (game.gameover)
+		{
+			DrawTextEx(font, "GAME OVER", { 320, 450 }, 38, 2, WHITE);
+		}
+		DrawRectangleRounded({ 320, 55, 170, 60 }, 0.3, 6, lightblue);
+		char scoreText[10];
+		sprintf(scoreText, "%d", game.score);
+		Vector2 textSize = MeasureTextEx(font, scoreText, 38, 2);
+
+		DrawTextEx(font, scoreText, { 320 + (170 - textSize.x) / 2, 65 }, 38, 2, WHITE);
+		DrawRectangleRounded({ 320, 215, 170, 180 }, 0.3, 6, lightblue);
 		game.draw();
 		EndDrawing(); // end the drawing
 	}

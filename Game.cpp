@@ -7,6 +7,7 @@ Game::Game() {
 	currentBlock = getRandomBlock();
 	nextBlock = getRandomBlock();
 	gameover = false;
+	score = 0;
 }
 
 Block Game::getRandomBlock() { //each block will appear once randomly before the cycle repeats
@@ -27,17 +28,30 @@ std::vector<Block> Game::getAllBlocks() {
 
 void Game::draw() {
 	grid.draw();
-	currentBlock.draw();
+	currentBlock.draw(11, 11);
+	switch (nextBlock.id)
+	{
+	case 3:
+		nextBlock.draw(255, 290);
+		break;
+	case 4:
+		nextBlock.draw(255, 280);
+		break;
+	default:
+		nextBlock.draw(270, 270);
+		break;
+	}
 }
 
 void Game::handleInput()
 {
-	int keyPresed = GetKeyPressed();
-	if (gameover && keyPresed != 0) {
+	int keyPressed = GetKeyPressed();
+	if (gameover && keyPressed != 0)
+	{
 		gameover = false;
 		reset();
 	}
-	switch (keyPresed)
+	switch (keyPressed)
 	{
 	case KEY_LEFT:
 		moveBlockLeft();
@@ -47,6 +61,7 @@ void Game::handleInput()
 		break;
 	case KEY_DOWN:
 		moveBlockDown();
+		updateScore(0, 1);
 		break;
 	case KEY_UP:
 		RotateBlock();
@@ -113,15 +128,21 @@ void Game::RotateBlock()
 void Game::lockBlock()
 {
 	std::vector<Position> tiles = currentBlock.getCellPositions();
-	for (Position item : tiles) {
+	for (Position item : tiles)
+	{
 		grid.grid[item.row][item.column] = currentBlock.id;
 	}
 	currentBlock = nextBlock;
-	if (blockFits() == false) {
+	if (blockFits() == false)
+	{
 		gameover = true;
 	}
 	nextBlock = getRandomBlock();
-	grid.clearFullRows();
+	int rowsCleared = grid.clearFullRows();
+	if (rowsCleared > 0)
+	{
+		updateScore(rowsCleared, 0);
+	}
 
 
 }
@@ -143,4 +164,25 @@ void Game::reset()
 	blocks = getAllBlocks();
 	currentBlock = getRandomBlock();
 	nextBlock = getRandomBlock();
+	score = 0;
+}
+
+void Game::updateScore(int linesCleared, int moveDownPoints)
+{
+	switch (linesCleared)
+	{
+	case 1:
+		score += 100;
+		break;
+	case 2:
+		score += 300;
+		break;
+	case 3:
+		score += 500;
+		break;
+	default:
+		break;
+	}
+
+	score += moveDownPoints;
 }

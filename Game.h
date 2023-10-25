@@ -19,6 +19,7 @@ public:
 	void moveBlockRight();
 	void moveBlockDown();
 	bool gameover;
+	int score;
 private:
 	bool isBlockOutside();
 	void RotateBlock();
@@ -28,4 +29,5 @@ private:
 	void lockBlock();
 	bool blockFits();
 	void reset();
+	void updateScore(int linesCleared, int moveDownPoints);
 };
